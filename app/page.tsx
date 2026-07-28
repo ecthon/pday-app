@@ -33,7 +33,7 @@ export default function Home() {
           </h1>
 
           <button className="flex size-10 items-center justify-center rounded-full bg-orange-300">
-            <HugeiconsIcon icon={Add01Icon} size={24} color="#fff" strokeWidth={2} />
+            <HugeiconsIcon icon={Add01Icon} size={20} color="#fff" strokeWidth={2} />
           </button>
         </div>
 
