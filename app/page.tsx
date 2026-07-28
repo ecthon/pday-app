@@ -1,11 +1,18 @@
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Add01Icon } from '@hugeicons/core-free-icons'
+
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const billsPaymentDates = [
-  { day: 5, title: 'Electricity Bill' },
-  { day: 10, title: 'Internet Bill' },
-  { day: 15, title: 'Water Bill' },
-  { day: 20, title: 'Gas Bill' },
-  { day: 25, title: 'Rent' },
-  { day: 28, title: 'Credit Card Payment' }
+  { day: 5, title: 'MRV' },
+  { day: 7, title: 'Internet' },
+  { day: 8, title: 'Claro Ecthon' },
+  { day: 10, title: 'Itaú' },
+  { day: 15, title: 'Moradia' },
+  { day: 17, title: 'Carrefour' },
+  { day: 18, title: 'Inter' },
+  { day: 19, title: 'Nubank' },
+  { day: 20, title: 'Claro Cacá' },
+  { day: 25, title: 'Amazon' },
 ]; // Example bill payment dates
 
 export default function Home() {
@@ -20,9 +27,16 @@ export default function Home() {
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-gray-50 p-4">
       <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
-        <h1 className="mb-4 text-2xl font-bold text-gray-800">
-          <span>{monthName.toUpperCase()}</span> <span className="text-zinc-400">{year}</span>
-        </h1>
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-800">
+            <span>{monthName.toUpperCase()}</span> <span className="text-zinc-400">{year}</span>
+          </h1>
+
+          <button className="flex size-10 items-center justify-center rounded-full bg-orange-300">
+            <HugeiconsIcon icon={Add01Icon} size={24} color="#fff" strokeWidth={2} />
+          </button>
+        </div>
+
 
         <div className="grid w-full grid-cols-7 gap-1">
           {daysOfWeek.map((day) => (
