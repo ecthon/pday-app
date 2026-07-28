@@ -1,4 +1,11 @@
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const billsPaymentDates = [
+  { day: 5, title: 'Electricity Bill' },
+  { day: 10, title: 'Internet Bill' },
+  { day: 15, title: 'Water Bill' },
+  { day: 20, title: 'Gas Bill' },
+  { day: 25, title: 'Rent' }
+]; // Example bill payment dates
 
 export default function Home() {
   const today = new Date();
@@ -7,6 +14,7 @@ export default function Home() {
   const monthName = today.toLocaleString('default', { month: 'long' });
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthStartWeekday = new Date(year, month, 1).getDay();
+  const paymentDays = new Set(billsPaymentDates.map(({ day }) => day));
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center bg-gray-50 p-4">
@@ -32,14 +40,20 @@ export default function Home() {
             />
           ))}
 
-          {Array.from({ length: daysInMonth }).map((_, index) => (
-            <div
-              key={index}
-              className="flex h-12 items-center justify-center rounded-md bg-zinc-100 text-sm font-medium"
-            >
-              {index + 1}
-            </div>
-          ))}
+          {Array.from({ length: daysInMonth }).map((_, index) => {
+            const dayNumber = index + 1;
+            const hasPayment = paymentDays.has(dayNumber);
+
+            return (
+              <div
+                key={dayNumber}
+                className={`flex h-12 items-center justify-center rounded-md text-sm font-medium ${hasPayment ? 'bg-orange-500 text-white shadow-sm' : 'bg-zinc-100 text-zinc-700'
+                  }`}
+              >
+                {dayNumber}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
