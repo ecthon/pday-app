@@ -4,7 +4,8 @@ const billsPaymentDates = [
   { day: 10, title: 'Internet Bill' },
   { day: 15, title: 'Water Bill' },
   { day: 20, title: 'Gas Bill' },
-  { day: 25, title: 'Rent' }
+  { day: 25, title: 'Rent' },
+  { day: 28, title: 'Credit Card Payment' }
 ]; // Example bill payment dates
 
 export default function Home() {
@@ -43,14 +44,16 @@ export default function Home() {
           {Array.from({ length: daysInMonth }).map((_, index) => {
             const dayNumber = index + 1;
             const hasPayment = paymentDays.has(dayNumber);
+            const isToday = dayNumber === today.getDate() && month === today.getMonth() && year === today.getFullYear();
 
             return (
               <div
                 key={dayNumber}
-                className={`flex h-12 items-center justify-center rounded-md text-sm font-medium ${hasPayment ? 'bg-orange-500 text-white shadow-sm' : 'bg-zinc-100 text-zinc-700'
+                className={`flex h-12 flex-col items-center justify-center rounded-md text-sm font-medium ${hasPayment ? 'bg-orange-500 text-white shadow-sm' : 'bg-zinc-100 text-zinc-700'
                   }`}
               >
-                {dayNumber}
+                <span>{dayNumber}</span>
+                {isToday ? <span className="mt-1 h-2 w-2 border border-white rounded-full bg-orange-600" /> : <span className="mt-1 h-2 w-2" />}
               </div>
             );
           })}
