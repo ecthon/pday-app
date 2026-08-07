@@ -85,9 +85,9 @@ export default function Home() {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthStartWeekday = new Date(year, month, 1).getDay();
   const paymentDays = new Set(billsPaymentDates.map(({ day }) => day));
+  const paymentsByDay = new Map(billsPaymentDates.map((item) => [item.day, item.events]));
   const [selectedDay, setSelectedDay] = useState(today.getDate());
-  const selectedPayment = billsPaymentDates.find((item) => item.day === selectedDay);
-  const selectedEvents = selectedPayment?.events ?? [];
+  const selectedEvents = paymentsByDay.get(selectedDay) ?? [];
 
   return (
     <div className="flex flex-col w-full items-center justify-center bg-gray-50 p-4 space-y-4">
@@ -153,6 +153,7 @@ export default function Home() {
                   key={dayNumber}
                   type="button"
                   onClick={() => setSelectedDay(dayNumber)}
+                  aria-pressed={selectedDay === dayNumber}
                   className={`flex h-12 flex-col items-center justify-center rounded-md text-sm font-medium transition ${hasPayment ? 'bg-orange-500 text-white shadow-sm hover:bg-orange-600' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
                     } ${selectedDay === dayNumber ? 'ring-2 ring-orange-400' : ''}`}
                 >
