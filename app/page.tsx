@@ -93,19 +93,16 @@ export default function Home() {
     <div className="flex flex-col w-full items-center justify-center bg-gray-50 p-4 space-y-4">
       <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
         <div className="mb-3 flex items-center justify-between">
-          <div>
-            <p className="text-sm text-zinc-500">Compromissos para pagar</p>
-            <p className="text-lg font-semibold text-zinc-900">Dia {selectedDay}</p>
+          <div className="flex w-full items-center space-x-2 bg-amber-50 p-2 rounded-lg">
+            <p className="text-2xl font-bold text-zinc-900">{selectedDay}</p>
+            <p className="text-sm text-zinc-500">{monthName} {year}</p>
           </div>
-          <span className="rounded-full bg-orange-100 px-3 py-1 text-sm font-medium text-orange-700">
-            {selectedEvents.length} compromisso{selectedEvents.length === 1 ? '' : 's'}
-          </span>
         </div>
 
         {selectedEvents.length > 0 ? (
           <ul className="space-y-2">
             {selectedEvents.map((event, index) => (
-              <li key={`${event.title}-${index}`} className="rounded-2xl border border-zinc-200 bg-white p-3 shadow-sm">
+              <li key={`${event.title}-${index}`} className="rounded-lg bg-zinc-50 p-2">
                 <p className="font-medium text-zinc-900">{event.title}</p>
               </li>
             ))}
