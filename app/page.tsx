@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { Add01Icon } from '@hugeicons/core-free-icons'
+import CheckmarkSquare02Icon from '@hugeicons/core-free-icons/CheckmarkSquare02Icon';
+import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const billsPaymentDates = [
@@ -123,7 +125,10 @@ export default function Home() {
                   aria-pressed={event.paid}
                   className={`mt-1 text-sm ${event.paid ? 'text-blue-600' : 'text-zinc-500 hover:text-zinc-700'}`}
                 >
-                  {event.paid ? 'Pago' : 'Pagar'}
+                  {event.paid
+                    ? <HugeiconsIcon icon={CheckmarkSquare02Icon} size={20} strokeWidth={2} className='text-orange-500' />
+                    : <HugeiconsIcon icon={SquareIcon} size={20} strokeWidth={2} className='text-orange-500' />
+                  }
                 </button>
               </li>
             ))}
