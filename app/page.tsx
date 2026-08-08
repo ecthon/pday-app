@@ -9,85 +9,98 @@ const billsPaymentDates = [
   {
     day: 5,
     events: [
-      { title: 'MRV' },
-      { title: 'Água' },
+      { title: 'MRV', paid: false },
+      { title: 'Água', paid: false },
     ],
   },
   {
     day: 6,
     events: [
-      { title: 'MRVteclado' },
-      { title: 'Água liquida' },
-      { title: 'Água geladinha' },
+      { title: 'MRVteclado', paid: false },
+      { title: 'Água liquida', paid: false },
+      { title: 'Água geladinha', paid: false },
     ],
   },
   {
     day: 7,
     events: [
-      { title: 'Internet' },
+      { title: 'Internet', paid: false },
     ],
   },
   {
     day: 8,
     events: [
-      { title: 'Claro Ecthon' },
+      { title: 'Claro Ecthon', paid: false },
     ],
   },
   {
     day: 10,
     events: [
-      { title: 'Itaú' },
+      { title: 'Itaú', paid: false },
     ],
   },
   {
     day: 15,
     events: [
-      { title: 'Moradia' },
+      { title: 'Moradia', paid: false },
     ],
   },
   {
     day: 17,
     events: [
-      { title: 'Carrefour' },
+      { title: 'Carrefour', paid: false },
     ],
   },
   {
     day: 18,
     events: [
-      { title: 'Inter' },
+      { title: 'Inter', paid: false },
     ],
   },
   {
     day: 19,
     events: [
-      { title: 'Nubank' },
+      { title: 'Nubank', paid: false },
     ],
   },
   {
     day: 20,
     events: [
-      { title: 'Claro Cacá' },
+      { title: 'Claro Cacá', paid: false },
     ],
   },
   {
     day: 25,
     events: [
-      { title: 'Amazon' },
+      { title: 'Amazon', paid: false },
     ],
   },
 ]; // Example bill payment dates
 
 export default function Home() {
+  const [bills, setBills] = useState(billsPaymentDates);
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
-  const monthName = today.toLocaleString('default', { month: 'long' });
+  const monthName = today.toLocaleString('pt-BR', { month: 'long' });
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthStartWeekday = new Date(year, month, 1).getDay();
-  const paymentDays = new Set(billsPaymentDates.map(({ day }) => day));
-  const paymentsByDay = new Map(billsPaymentDates.map((item) => [item.day, item.events]));
+  const paymentsByDay = new Map(bills.map((item) => [item.day, item.events]));
   const [selectedDay, setSelectedDay] = useState(today.getDate());
   const selectedEvents = paymentsByDay.get(selectedDay) ?? [];
+
+  const toggleBillPaid = (day: number, eventIndex: number) => {
+    setBills((currentBills) => currentBills.map((bill) => (
+      bill.day === day
+        ? {
+          ...bill,
+          events: bill.events.map((event, index) => (
+            index === eventIndex ? { ...event, paid: !event.paid } : event
+          )),
+        }
+        : bill
+    )));
+  };
 
   return (
     <div className="flex flex-col w-full items-center justify-center bg-gray-50 p-4 space-y-4">
@@ -102,8 +115,16 @@ export default function Home() {
         {selectedEvents.length > 0 ? (
           <ul className="space-y-2">
             {selectedEvents.map((event, index) => (
-              <li key={`${event.title}-${index}`} className="rounded-lg bg-zinc-50 p-2">
-                <p className="font-medium text-zinc-900">{event.title}</p>
+              <li key={`${event.title}-${index}`} className="flex items-center justify-between rounded-lg bg-zinc-50 p-2">
+                <p className={`font-medium ${event.paid ? 'text-zinc-400 line-through' : 'text-zinc-900'}`}>{event.title}</p>
+                <button
+                  type="button"
+                  onClick={() => toggleBillPaid(selectedDay, index)}
+                  aria-pressed={event.paid}
+                  className={`mt-1 text-sm ${event.paid ? 'text-blue-600' : 'text-zinc-500 hover:text-zinc-700'}`}
+                >
+                  {event.paid ? 'Pago' : 'Pagar'}
+                </button>
               </li>
             ))}
           </ul>
@@ -145,7 +166,9 @@ export default function Home() {
 
             {Array.from({ length: daysInMonth }).map((_, index) => {
               const dayNumber = index + 1;
-              const hasPayment = paymentDays.has(dayNumber);
+              const dayEvents = paymentsByDay.get(dayNumber) ?? [];
+              const hasPayment = dayEvents.length > 0;
+              const isDayFullyPaid = hasPayment && dayEvents.every((event) => event.paid);
               const isToday = dayNumber === today.getDate() && month === today.getMonth() && year === today.getFullYear();
 
               return (
@@ -154,7 +177,7 @@ export default function Home() {
                   type="button"
                   onClick={() => setSelectedDay(dayNumber)}
                   aria-pressed={selectedDay === dayNumber}
-                  className={`flex h-12 flex-col items-center justify-center rounded-md text-sm font-medium transition ${hasPayment ? 'bg-orange-500 text-white shadow-sm hover:bg-orange-600' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                  className={`flex h-12 flex-col items-center justify-center rounded-md text-sm font-medium transition ${isDayFullyPaid ? 'bg-blue-500 text-white shadow-sm hover:bg-blue-600' : hasPayment ? 'bg-orange-500 text-white shadow-sm hover:bg-orange-600' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
                     } ${selectedDay === dayNumber ? 'ring-2 ring-orange-400' : ''}`}
                 >
                   <span>{dayNumber}</span>
