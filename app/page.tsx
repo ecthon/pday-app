@@ -5,6 +5,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import CheckmarkSquare02Icon from '@hugeicons/core-free-icons/CheckmarkSquare02Icon';
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
 import Calendar03Icon from '@hugeicons/core-free-icons/Calendar03Icon';
+import { LogoutIcon } from '@hugeicons/core-free-icons';
 
 const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const billsPaymentDates = [
@@ -108,6 +109,18 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full items-center justify-center bg-gray-50 p-4 space-y-4">
 
+      <header className="flex items-center px-4 w-full justify-between py-4 max-w-2xl">
+        <div className="flex w-full items-center gap-4">
+          <div className="flex size-12 items-center justify-center rounded-full bg-indigo-50">
+            <p className='font-semibold'>EB</p>
+          </div>
+          <h1 className="text-sm font-bold text-gray-800">Olá, Ecthon!</h1>
+        </div>
+        <button className='flex size-12 shrink-0 items-center justify-center rounded-full bg-white'>
+          <HugeiconsIcon icon={LogoutIcon} size={20} strokeWidth={2} className='text-zinc-400' />
+        </button>
+      </header >
+
       <div className="flex w-full items-center justify-center bg-gray-50">
         <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
           <div className="mb-4 flex items-center space-x-2">
@@ -195,6 +208,6 @@ export default function Home() {
           </p>
         )}
       </div>
-    </div>
+    </div >
   );
 }
