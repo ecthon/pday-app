@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { Add01Icon } from '@hugeicons/core-free-icons'
 import CheckmarkSquare02Icon from '@hugeicons/core-free-icons/CheckmarkSquare02Icon';
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
 import Calendar03Icon from '@hugeicons/core-free-icons/Calendar03Icon';
