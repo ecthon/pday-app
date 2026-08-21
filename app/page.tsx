@@ -107,7 +107,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-center bg-gray-50 p-4 space-y-4">
+    <div className="flex flex-col w-full h-screen items-center justify-center bg-gray-50 p-4 space-y-4">
 
       <header className="flex items-center px-4 w-full justify-between py-4 max-w-2xl">
         <div className="flex w-full items-center gap-4">
