@@ -6,6 +6,19 @@ import CheckmarkSquare02Icon from '@hugeicons/core-free-icons/CheckmarkSquare02I
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
 import Calendar03Icon from '@hugeicons/core-free-icons/Calendar03Icon';
 import { LogoutIcon } from '@hugeicons/core-free-icons';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { PlusIcon } from 'lucide-react';
 
 const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const billsPaymentDates = [
@@ -86,6 +99,8 @@ export default function Home() {
   const year = today.getFullYear();
   const month = today.getMonth();
   const [selectedDay, setSelectedDay] = useState(today.getDate());
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newEventTitle, setNewEventTitle] = useState('');
   const monthName = today.toLocaleString('pt-BR', { month: 'long' });
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthStartWeekday = new Date(year, month, 1).getDay();
@@ -104,6 +119,30 @@ export default function Home() {
         }
         : bill
     )));
+  };
+
+  const addEvent = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const title = newEventTitle.trim();
+
+    if (!title) return;
+
+    setBills((currentBills) => {
+      const selectedBill = currentBills.find((bill) => bill.day === selectedDay);
+
+      if (selectedBill) {
+        return currentBills.map((bill) => (
+          bill.day === selectedDay
+            ? { ...bill, events: [...bill.events, { title, paid: false }] }
+            : bill
+        ));
+      }
+
+      return [...currentBills, { day: selectedDay, events: [{ title, paid: false }] }];
+    });
+
+    setNewEventTitle('');
+    setIsAddDialogOpen(false);
   };
 
   return (
@@ -177,9 +216,42 @@ export default function Home() {
 
       <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
         <div className="mb-3 flex items-center justify-between">
-          <div className="flex w-full items-center space-x-2 bg-indigo-50 py-2 px-3 rounded-lg">
+          <div className="flex w-full justify-between items-center space-x-2 bg-indigo-50 py-2 px-3 rounded-lg">
             <p className="text-2xl font-bold text-indigo-900">{selectedDay}</p>
-            <p className="capitalize text-indigo-300">{selectedWeekday}</p>
+            <p className="capitalize text-indigo-900">{selectedWeekday}</p>
+            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+              <DialogTrigger render={<Button className="size-8 rounded-full bg-indigo-500 text-white hover:bg-indigo-600" aria-label="Adicionar pagamento" />}>
+                <PlusIcon />
+              </DialogTrigger>
+              <DialogContent>
+                <form onSubmit={addEvent}>
+                  <DialogHeader>
+                    <DialogTitle>Adicionar pagamento</DialogTitle>
+                    <DialogDescription>
+                      Registre um compromisso para o dia {selectedDay}.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-2 py-4">
+                    <Label htmlFor="event-title">Título</Label>
+                    <Input
+                      id="event-title"
+                      value={newEventTitle}
+                      onChange={(event) => setNewEventTitle(event.target.value)}
+                      placeholder="Ex.: Conta de luz"
+                      autoFocus
+                    />
+                  </div>
+                  <DialogFooter>
+                    <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
+                      Cancelar
+                    </Button>
+                    <Button type="submit" disabled={!newEventTitle.trim()}>
+                      Adicionar à lista
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
