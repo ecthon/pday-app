@@ -2,20 +2,9 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { PlusIcon } from 'lucide-react';
 import { Calendar } from '@/components/calendar';
 import { PaymentList } from '@/components/payment-list';
+import { AddPaymentDialog } from '@/components/add-payment-dialog';
 
 const billsPaymentDates = [
   {
@@ -96,7 +85,6 @@ export default function Home() {
   const month = today.getMonth();
   const [selectedDay, setSelectedDay] = useState(today.getDate());
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [newEventTitle, setNewEventTitle] = useState('');
   const selectedWeekday = new Date(year, month, selectedDay).toLocaleString('pt-BR', { weekday: 'long' });
   const paymentsByDay = new Map(bills.map((item) => [item.day, item.events]));
   const selectedEvents = paymentsByDay.get(selectedDay) ?? [];
@@ -114,12 +102,7 @@ export default function Home() {
     )));
   };
 
-  const addEvent = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const title = newEventTitle.trim();
-
-    if (!title) return;
-
+  const addEvent = (title: string) => {
     setBills((currentBills) => {
       const selectedBill = currentBills.find((bill) => bill.day === selectedDay);
 
@@ -134,7 +117,6 @@ export default function Home() {
       return [...currentBills, { day: selectedDay, events: [{ title, paid: false }] }];
     });
 
-    setNewEventTitle('');
     setIsAddDialogOpen(false);
   };
 
@@ -153,39 +135,12 @@ export default function Home() {
           <div className="flex w-full justify-between items-center space-x-2 bg-indigo-50 py-2 px-3 rounded-lg">
             <p className="text-2xl font-bold text-indigo-900">{selectedDay}</p>
             <p className="capitalize text-indigo-900">{selectedWeekday}</p>
-            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-              <DialogTrigger render={<Button className="size-8 rounded-full bg-indigo-500 text-white hover:bg-indigo-600" aria-label="Adicionar pagamento" />}>
-                <PlusIcon />
-              </DialogTrigger>
-              <DialogContent>
-                <form onSubmit={addEvent}>
-                  <DialogHeader>
-                    <DialogTitle>Adicionar pagamento</DialogTitle>
-                    <DialogDescription>
-                      Registre um compromisso para o dia {selectedDay}.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-2 py-4">
-                    <Label htmlFor="event-title">Título</Label>
-                    <Input
-                      id="event-title"
-                      value={newEventTitle}
-                      onChange={(event) => setNewEventTitle(event.target.value)}
-                      placeholder="Ex.: Conta de luz"
-                      autoFocus
-                    />
-                  </div>
-                  <DialogFooter>
-                    <Button type="button" variant="outline" onClick={() => setIsAddDialogOpen(false)}>
-                      Cancelar
-                    </Button>
-                    <Button type="submit" disabled={!newEventTitle.trim()}>
-                      Adicionar à lista
-                    </Button>
-                  </DialogFooter>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <AddPaymentDialog
+              open={isAddDialogOpen}
+              selectedDay={selectedDay}
+              onOpenChange={setIsAddDialogOpen}
+              onAdd={addEvent}
+            />
           </div>
         </div>
 
