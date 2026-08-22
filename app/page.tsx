@@ -1,9 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { HugeiconsIcon } from '@hugeicons/react'
-import CheckmarkSquare02Icon from '@hugeicons/core-free-icons/CheckmarkSquare02Icon';
-import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { PlusIcon } from 'lucide-react';
 import { Calendar } from '@/components/calendar';
+import { PaymentList } from '@/components/payment-list';
 
 const billsPaymentDates = [
   {
@@ -191,30 +189,10 @@ export default function Home() {
           </div>
         </div>
 
-        {selectedEvents.length > 0 ? (
-          <ul className="space-y-2">
-            {selectedEvents.map((event, index) => (
-              <li key={`${event.title}-${index}`} className="flex items-center justify-between rounded-lg bg-zinc-50 py-2 px-3">
-                <p className={`font-medium ${event.paid ? 'text-zinc-400 line-through' : 'text-zinc-900'}`}>{event.title}</p>
-                <button
-                  type="button"
-                  onClick={() => toggleBillPaid(selectedDay, index)}
-                  aria-pressed={event.paid}
-                  className={`mt-1 text-sm ${event.paid ? 'text-blue-600' : 'text-zinc-500 hover:text-zinc-700'}`}
-                >
-                  {event.paid
-                    ? <HugeiconsIcon icon={CheckmarkSquare02Icon} size={20} strokeWidth={2} className='text-indigo-500' />
-                    : <HugeiconsIcon icon={SquareIcon} size={20} strokeWidth={2} className='text-zinc-500' />
-                  }
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="rounded-2xl border border-dashed border-zinc-300 bg-white p-4 text-sm text-zinc-500">
-            Não há compromissos registrados para este dia.
-          </p>
-        )}
+        <PaymentList
+          events={selectedEvents}
+          onTogglePaid={(eventIndex) => toggleBillPaid(selectedDay, eventIndex)}
+        />
       </div>
     </div >
   );
