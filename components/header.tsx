@@ -3,7 +3,7 @@ import { LogoutIcon } from '@hugeicons/core-free-icons';
 
 export function Header() {
   return (
-    <header className="flex items-center px-4 w-full justify-between py-4 max-w-2xl">
+    <header className="flex items-center px-4 w-full justify-between bg-gray-50 py-4 max-w-2xl">
       <div className="flex w-full items-center gap-4">
         <div className="flex size-12 items-center justify-center rounded-full bg-indigo-50">
           <p className="font-semibold">EB</p>
