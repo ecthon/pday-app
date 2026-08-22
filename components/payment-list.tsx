@@ -27,7 +27,7 @@ export function PaymentList({ events, onTogglePaid }: PaymentListProps) {
         <ul className="space-y-2">
             {events.map((event, index) => (
                 <li key={`${event.title}-${index}`} className="flex items-center justify-between rounded-lg bg-zinc-50 py-2 px-3">
-                    <p className={`font-medium ${event.paid ? 'text-zinc-400 line-through' : 'text-zinc-900'}`}>{event.title}</p>
+                    <p className={`text-sm font-medium leading-5 ${event.paid ? 'text-zinc-400 line-through' : 'text-zinc-900'}`}>{event.title}</p>
                     <button
                         type="button"
                         onClick={() => onTogglePaid(index)}

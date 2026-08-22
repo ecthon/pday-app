@@ -32,12 +32,12 @@ export function Calendar({
 
   return (
     <div className="flex w-full items-center justify-center bg-gray-50">
-      <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-white p-3 sm:p-4">
         <div className="mb-4 flex items-center space-x-2">
           <div className="flex size-10 items-center justify-center rounded-full bg-indigo-50">
             <HugeiconsIcon icon={Calendar03Icon} size={20} strokeWidth={2} className="text-indigo-500" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-lg font-semibold leading-tight text-gray-800 sm:text-2xl sm:font-bold">
             <span>{monthName.toUpperCase()}</span> <span className="text-zinc-400">{year}</span>
           </h1>
         </div>
@@ -46,7 +46,7 @@ export function Calendar({
           {daysOfWeek.map((day) => (
             <div
               key={day}
-              className="flex h-12 items-center justify-center rounded-md text-sm font-medium text-zinc-500"
+              className="flex h-10 items-center justify-center rounded-md text-xs font-medium text-zinc-500 sm:h-12 sm:text-sm"
             >
               {day}
             </div>
@@ -55,7 +55,7 @@ export function Calendar({
           {Array.from({ length: monthStartWeekday }).map((_, index) => (
             <div
               key={`blank-${index}`}
-              className="h-12 rounded-md bg-transparent"
+              className="h-10 rounded-md bg-transparent sm:h-12"
             />
           ))}
 
@@ -72,7 +72,7 @@ export function Calendar({
                 type="button"
                 onClick={() => onDaySelect(dayNumber)}
                 aria-pressed={selectedDay === dayNumber}
-                className={`flex h-12 flex-col items-center justify-center rounded-md text-sm font-medium transition ${isDayFullyPaid ? 'bg-emerald-300 text-white shadow-sm hover:bg-indigo-500' : hasPayment ? 'bg-indigo-300 text-white shadow-sm hover:bg-indigo-400' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                className={`flex h-10 flex-col items-center justify-center rounded-md text-xs font-medium transition sm:h-12 sm:text-sm ${isDayFullyPaid ? 'bg-emerald-300 text-white shadow-sm hover:bg-indigo-500' : hasPayment ? 'bg-indigo-300 text-white shadow-sm hover:bg-indigo-400' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
                   } ${selectedDay === dayNumber ? 'ring-indigo-400' : ''}`}
               >
                 <span>{dayNumber}</span>

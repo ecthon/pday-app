@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/calendar';
 import { PaymentList } from '@/components/payment-list';
 import { AddPaymentDialog } from '@/components/add-payment-dialog';
@@ -121,7 +120,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-1 flex-col w-full items-center justify-center bg-gray-50 p-4 space-y-4">
+    <div className="flex flex-1 flex-col w-full items-center justify-center bg-gray-50 p-3 space-y-4 sm:p-4">
       <Calendar
         year={year}
         month={month}
@@ -130,11 +129,11 @@ export default function Home() {
         onDaySelect={setSelectedDay}
       />
 
-      <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
+      <div className="w-full max-w-2xl rounded-2xl bg-white p-3 sm:p-4">
         <div className="mb-3 flex items-center justify-between">
-          <div className="flex w-full justify-between items-center space-x-2 bg-indigo-50 py-2 px-3 rounded-lg">
-            <p className="text-2xl font-bold text-indigo-900">{selectedDay}</p>
-            <p className="capitalize text-indigo-900">{selectedWeekday}</p>
+          <div className="flex w-full justify-between items-center space-x-2 rounded-lg bg-indigo-50 px-3 py-2">
+            <p className="text-xl font-semibold text-indigo-900 sm:text-2xl sm:font-bold">{selectedDay}</p>
+            <p className="text-sm font-medium capitalize text-indigo-900 sm:text-base">{selectedWeekday}</p>
             <AddPaymentDialog
               open={isAddDialogOpen}
               selectedDay={selectedDay}
