@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { HugeiconsIcon } from '@hugeicons/react'
 import CheckmarkSquare02Icon from '@hugeicons/core-free-icons/CheckmarkSquare02Icon';
 import SquareIcon from '@hugeicons/core-free-icons/SquareIcon';
-import Calendar03Icon from '@hugeicons/core-free-icons/Calendar03Icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -18,8 +17,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { PlusIcon } from 'lucide-react';
+import { Calendar } from '@/components/calendar';
 
-const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const billsPaymentDates = [
   {
     day: 5,
@@ -100,9 +99,6 @@ export default function Home() {
   const [selectedDay, setSelectedDay] = useState(today.getDate());
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newEventTitle, setNewEventTitle] = useState('');
-  const monthName = today.toLocaleString('pt-BR', { month: 'long' });
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const monthStartWeekday = new Date(year, month, 1).getDay();
   const selectedWeekday = new Date(year, month, selectedDay).toLocaleString('pt-BR', { weekday: 'long' });
   const paymentsByDay = new Map(bills.map((item) => [item.day, item.events]));
   const selectedEvents = paymentsByDay.get(selectedDay) ?? [];
@@ -146,59 +142,13 @@ export default function Home() {
 
   return (
     <div className="flex flex-1 flex-col w-full items-center justify-center bg-gray-50 p-4 space-y-4">
-      <div className="flex w-full items-center justify-center bg-gray-50">
-        <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
-          <div className="mb-4 flex items-center space-x-2">
-            <div className="flex size-10 items-center justify-center rounded-full bg-indigo-50">
-              <HugeiconsIcon icon={Calendar03Icon} size={20} strokeWidth={2} className='text-indigo-500' />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-800">
-              <span>{monthName.toUpperCase()}</span> <span className="text-zinc-400">{year}</span>
-            </h1>
-          </div>
-
-
-          <div className="grid w-full grid-cols-7 gap-1">
-            {daysOfWeek.map((day) => (
-              <div
-                key={day}
-                className="flex h-12 items-center justify-center rounded-md text-sm font-medium text-zinc-500"
-              >
-                {day}
-              </div>
-            ))}
-
-            {Array.from({ length: monthStartWeekday }).map((_, index) => (
-              <div
-                key={`blank-${index}`}
-                className="h-12 rounded-md bg-transparent"
-              />
-            ))}
-
-            {Array.from({ length: daysInMonth }).map((_, index) => {
-              const dayNumber = index + 1;
-              const dayEvents = paymentsByDay.get(dayNumber) ?? [];
-              const hasPayment = dayEvents.length > 0;
-              const isDayFullyPaid = hasPayment && dayEvents.every((event) => event.paid);
-              const isToday = dayNumber === today.getDate() && month === today.getMonth() && year === today.getFullYear();
-
-              return (
-                <button
-                  key={dayNumber}
-                  type="button"
-                  onClick={() => setSelectedDay(dayNumber)}
-                  aria-pressed={selectedDay === dayNumber}
-                  className={`flex h-12 flex-col items-center justify-center rounded-md text-sm font-medium transition ${isDayFullyPaid ? 'bg-emerald-300 text-white shadow-sm hover:bg-indigo-500' : hasPayment ? 'bg-indigo-300 text-white shadow-sm hover:bg-indigo-400' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
-                    } ${selectedDay === dayNumber ? 'ring-indigo-400' : ''}`}
-                >
-                  <span>{dayNumber}</span>
-                  {isToday ? <span className="mt-1 h-2 w-2 border border-white rounded-full bg-indigo-500" /> : <span className="mt-1 h-2 w-2" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      <Calendar
+        year={year}
+        month={month}
+        selectedDay={selectedDay}
+        paymentsByDay={paymentsByDay}
+        onDaySelect={setSelectedDay}
+      />
 
       <div className="w-full max-w-2xl rounded-2xl bg-white p-4">
         <div className="mb-3 flex items-center justify-between">
